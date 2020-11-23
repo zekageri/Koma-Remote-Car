@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="servotext" type="text" onchange="myFunction()" placeholder="servonumber">
+    <button type="button" onclick="StopServo()" value="STOP">STOP</button>
+    <script>
+        function myFunction(){
+            var val = "param0=";
+            val += document.getElementById("servotext").value;
+            httpGetAsync("/Set_Servo", Callback, val);
+        }
+
+    function StopServo(){
+        httpGetAsync("/Stop_Servo", Callback);
+    }
+
+    var Callback = function Get_Callback(Response) {}
+
+    function httpGetAsync(theUrl, callback, value) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.status == 200) {
+                    callback(xmlHttp.responseText);
+                } else {
+                    alert(xmlHttp.statusText);
+                }
+            }
+        }
+        xmlHttp.open("GET", theUrl + "?" + value, true);
+        xmlHttp.send(null);
+    }
+
+    </script>
+</body>
+</html>
